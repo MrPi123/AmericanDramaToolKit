@@ -1,6 +1,7 @@
 package com.android.pixia.americandramatoolkit.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.android.pixia.americandramatoolkit.AppConfig;
 import com.android.pixia.americandramatoolkit.R;
 import com.android.pixia.americandramatoolkit.base.BaseActivity;
 import com.android.pixia.americandramatoolkit.bean.UpdateBean;
+import com.android.pixia.americandramatoolkit.view.USInfoActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.florent37.glidepalette.BitmapPalette;
@@ -35,69 +37,43 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.ViewHolder> im
 
     public void init(List<UpdateBean> data){
         list.clear();
-        System.out.println(list.size());
         list.addAll(0, data);
         list.remove(list.size() - 1);
         notifyDataSetChanged();
     }
 
+    public UpdateBean getItem(int position){
+        return list.get(position);
+    }
     public TimeAdapter(List<UpdateBean> data, BaseActivity activity) {
         this.list = data;
         this.mActivity = activity;
     }
 
     @Override
-    public int getItemViewType(int position) {
-        if(list.size()>0) {
-            if (list.get(position).getType() != null) {
-                return AppConfig.HEADER;
-            } else {
-                return AppConfig.NOMAL;
-            }
-        }else {
-            return AppConfig.NOMAL;
-        }
-    }
-
-    @Override
     public TimeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
-        if(viewType==AppConfig.NOMAL) {
-             view = LayoutInflater.from(parent.getContext())
+        view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_time, parent, false);
-        }else {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_header, parent, false);
-        }
-        return new ViewHolder(view,viewType);
+
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(TimeAdapter.ViewHolder holder, int position) {
+            Glide.with(mActivity)
+                    .load(list.get(position).getPicUrl())
+                    .listener(GlidePalette.with(list.get(position).getPicUrl())
+                                    .use(GlidePalette.Profile.VIBRANT_LIGHT)
+                                    .intoBackground(holder.mCard)
+                                    .intoTextColor(holder.mTitle)
+                                    .intoTextColor(holder.mTime)
+                    )
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.mAlbum);
+            holder.mTitle.setText(list.get(position).getTitle());
+            holder.mTime.setText(list.get(position).getTime());
 
-        if(list.size()>0) {
-            if (getItemViewType(position) == AppConfig.NOMAL) {
-                Glide.with(mActivity)
-                        .load(list.get(position).getPicUrl())
-                        .listener(GlidePalette.with(list.get(position).getPicUrl())
-                                        .use(GlidePalette.Profile.VIBRANT_LIGHT)
-                                        .intoBackground(holder.mCard)
-                                        .intoTextColor(holder.mTitle)
-                                        .intoTextColor(holder.mTime)
-                        )
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.mAlbum);
-                holder.mTitle.setText(list.get(position).getTitle());
-                holder.mTime.setText(list.get(position).getTime());
-            } else {
-                if (!list.get(position).getType().startsWith("相")) {
-                    holder.mType.setText(list.get(position).getType().replace(" 剧集名称 电视网 集数 本集名称", ""));
-                }
-            }
-//            if(position==list.size()){
-//                holder.itemView.setVisibility(View.GONE);
-//            }
-        }
     }
 
     @Override
@@ -119,18 +95,21 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.ViewHolder> im
         private TextView mTime;
         private CardView mCard;
 
-        private TextView mType;
 
-        public ViewHolder(View itemView,int ViewType) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            if(ViewType == AppConfig.NOMAL){
-                mAlbum = (ImageView) itemView.findViewById(R.id.album_image);
-                mTitle = (TextView) itemView.findViewById(R.id.album_title);
-                mCard = (CardView) itemView.findViewById(R.id.cardView);
-                mTime = (TextView) itemView.findViewById(R.id.album_time);
-            }else {
-                mType = (TextView) itemView.findViewById(R.id.text_time_us);
-            }
+            mAlbum = (ImageView) itemView.findViewById(R.id.album_image);
+            mTitle = (TextView) itemView.findViewById(R.id.album_title);
+            mCard = (CardView) itemView.findViewById(R.id.cardView);
+            mTime = (TextView) itemView.findViewById(R.id.album_time);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mActivity, USInfoActivity.class);
+                    intent.putExtra("bean", list.get(getLayoutPosition()));
+                    mActivity.startActivity(intent);
+                }
+            });
         }
     }
 }

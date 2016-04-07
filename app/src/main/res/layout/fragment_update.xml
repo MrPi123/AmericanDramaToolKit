@@ -22,4 +22,22 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_header"
+        android:visibility="gone"
+        android:id="@+id/timeParent"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_time"
+            android:textColor="@color/md_white_1000"
+            android:layout_margin="@dimen/text_margin"
+            android:text="美剧贩周一导视(2016-04-04)"
+            />
+    </FrameLayout>
+
 </FrameLayout>

@@ -1,9 +1,11 @@
 package com.android.pixia.americandramatoolkit.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by pixia on 2016/4/6.
  */
-public class UpdateBean {
+public class UpdateBean implements Serializable{
 
     private String picUrl;
     private String title;

@@ -52,6 +52,7 @@ public class ParserHtmlListener {
 
         @Override
         protected List<UpdateBean> doInBackground(String... params) {
+            list.clear();
             List<String> urls = new ArrayList<>();
             Elements tableElement = document.getElementsByTag("tbody");
             for (Element element:tableElement){
@@ -60,32 +61,25 @@ public class ParserHtmlListener {
                 for (int i=0;i<trElements.size();i++){
                     UpdateBean bean = new UpdateBean();
                     if(i==0){
-                        bean.setType(trElements.get(i).text());
                         time = trElements.get(i).text();
                     }
-
-                    bean.setTime(time.replace(" 剧集名称 电视网 集数 本集名称", "")
-                            .replace("美剧贩","")
+                    time = time.replace(" 剧集名称 电视网 集数 本集名称", "");
+                    bean.setType(time);
+                    bean.setTime(time.replace("美剧贩","")
                             .replace("导视"," "));
+
                     Elements urlEls = trElements.get(i).getElementsByTag("a");
                     Elements imgEls = trElements.get(i).getElementsByTag("img");
                     for (Element imgs:imgEls){
-
                         bean.setPicUrl(imgs.attr("src"));
                     }
                     for (Element el:urlEls){
                         bean.setTitle(el.text());
                     }
-//                    for(UpdateBean bean1:list){
-//                        System.out.println(bean1.getType());
-//                        System.out.println(bean1.getPicUrl());
-//                        System.out.println(bean1.getTitle());
-//
-//                    }
-                    list.add(bean);
-//                    System.out.println(trElements.text());
+                    if(bean.getTitle()!=null) {
+                        list.add(bean);
+                    }
                 }
-
             }
 
             return list;

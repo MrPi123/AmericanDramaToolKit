@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,8 +18,10 @@ import java.util.List;
  */
 public class API {
 
+    public static List<UpdateBean> listBean = new ArrayList<>();
     //获取每日更新美剧
-    public static void load(final String url, final TimeAdapter adapter, final int action) {
+    public static void load(final String url, final TimeAdapter adapter) {
+        listBean.clear();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -29,11 +32,8 @@ public class API {
                             .parser(new OnParserListener() {
                                 @Override
                                 public void onSuccess(List<UpdateBean> list) {
-                                    if(action== AppConfig.LOAD_REFRESH){
-                                        adapter.notifyDataSetChanged();
-                                    }else {
-                                        adapter.init(list);
-                                    }
+                                    listBean.addAll(list);
+                                    adapter.init(list);
                                 }
 
                                 @Override
