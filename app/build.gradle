@@ -18,10 +18,23 @@ android {
         }
     }
 }
-
+repositories {
+    mavenCentral() // jcenter() works as well because it pulls from Maven Central
+}
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
+    //Glide
+    compile files('libs/jsoup-1.8.3.jar')
+
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:cardview-v7:23.2.1'
+    compile 'com.android.support:design:23.2.1'
+
+    compile 'com.github.florent37:glidepalette:1.0.6'
+    compile('com.mikepenz:materialdrawer:5.1.8@aar') {
+        transitive = true
+    }
+
+    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.6'
 }

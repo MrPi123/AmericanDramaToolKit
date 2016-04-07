@@ -1,5 +1,7 @@
 package com.android.pixia.americandramatoolkit.base;
 
+import org.jsoup.nodes.Document;
+
 /**
  * Created by pixia on 2016/4/6.
  *
@@ -7,7 +9,7 @@ package com.android.pixia.americandramatoolkit.base;
 
 public interface OnLoadListener {
 
-    void onSuccess();
-    void onFail();
+    void onSuccess(Document document);
+    void onFail(String err);
 
 }

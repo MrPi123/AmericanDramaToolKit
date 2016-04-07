@@ -1,0 +1,25 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.android.pixia.americandramatoolkit.fragment.UpdateFragment">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe_refresh">
+
+        <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+            android:id="@+id/list_item_update"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fastScrollAutoHide="true"
+            app:fastScrollAutoHideDelay="1500"
+            app:fastScrollPopupBgColor="@color/colorAccent"
+            app:fastScrollPopupTextColor="#fff"
+            app:fastScrollThumbColor="@color/colorAccent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</FrameLayout>
